@@ -1,1 +1,8 @@
+colorama==0.4.6
+iniconfig==2.3.0
+packaging==26.2
+pluggy==1.6.0
 pygame==2.6.1
+Pygments==2.20.0
+pytest==9.1.0
+pytest-timeout==2.4.0
