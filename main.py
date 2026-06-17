@@ -1,11 +1,10 @@
 """Игра Изгиб Питона."""
 
-import sys
 import random
+import sys
 from typing import Optional
 
 import pygame
-
 
 CELL_SIZE = 20
 
@@ -30,7 +29,7 @@ GAME_SPEED = 20
 
 pygame.init()
 screen = pygame.display.set_mode((SCREEN_W, SCREEN_H))
-pygame.display.set_caption("Изгиб Питона")
+pygame.display.set_caption('Изгиб Питона')
 clock = pygame.time.Clock()
 
 
@@ -216,5 +215,5 @@ def main() -> None:
         pygame.display.update()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
