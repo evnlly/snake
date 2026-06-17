@@ -6,29 +6,29 @@ from typing import Optional
 
 import pygame
 
-CELL_SIZE = 20
+GRID_SIZE = 20
 
 GRID_WIDTH = 32
 GRID_HEIGHT = 24
 
-SCREEN_W = CELL_SIZE * GRID_WIDTH
-SCREEN_H = CELL_SIZE * GRID_HEIGHT
+SCREEN_WIDTH = GRID_SIZE * GRID_WIDTH
+SCREEN_HEIGHT = GRID_SIZE * GRID_HEIGHT
 
-SCREEN_CENTER = (SCREEN_W // 2, SCREEN_H // 2)
+SCREEN_CENTER = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
 
-BG_COLOR = (0, 0, 0)
+BOARD_BACKGROUND_COLOR = (0, 0, 0)
 
-UP = (0, -CELL_SIZE)
-DOWN = (0, CELL_SIZE)
-LEFT = (-CELL_SIZE, 0)
-RIGHT = (CELL_SIZE, 0)
+UP = (0, -GRID_SIZE)
+DOWN = (0, GRID_SIZE)
+LEFT = (-GRID_SIZE, 0)
+RIGHT = (GRID_SIZE, 0)
 
 OPPOSITE = {UP: DOWN, DOWN: UP, LEFT: RIGHT, RIGHT: LEFT}
 
 GAME_SPEED = 20
 
 pygame.init()
-screen = pygame.display.set_mode((SCREEN_W, SCREEN_H))
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption('Изгиб Питона')
 clock = pygame.time.Clock()
 
@@ -78,16 +78,16 @@ class Apple(GameObject):
         while True:
             col = random.randint(0, GRID_WIDTH - 1)
             row = random.randint(0, GRID_HEIGHT - 1)
-            candidate = (col * CELL_SIZE, row * CELL_SIZE)
+            candidate = (col * GRID_SIZE, row * GRID_SIZE)
             if candidate not in occupied:
                 self.position = candidate
                 break
 
     def draw(self) -> None:
         """Рисуем яблоко: закрашенный квадрат с тонкой чёрной рамкой."""
-        rect = pygame.Rect(self.position, (CELL_SIZE, CELL_SIZE))
+        rect = pygame.Rect(self.position, (GRID_SIZE, GRID_SIZE))
         pygame.draw.rect(screen, self.body_color, rect)
-        pygame.draw.rect(screen, BG_COLOR, rect, 1)
+        pygame.draw.rect(screen, BOARD_BACKGROUND_COLOR, rect, 1)
 
 
 class Snake(GameObject):
@@ -126,8 +126,8 @@ class Snake(GameObject):
 
         # остаток от деления даёт "телепортацию" через стену
         new_head = (
-            (hx + dx) % SCREEN_W,
-            (hy + dy) % SCREEN_H,
+            (hx + dx) % SCREEN_WIDTH,
+            (hy + dy) % SCREEN_HEIGHT,
         )
         self.positions.insert(0, new_head)
 
@@ -143,21 +143,21 @@ class Snake(GameObject):
         self.direction = RIGHT
         self.next_direction = None
         self._last_tail = None
-        screen.fill(BG_COLOR)
+        screen.fill(BOARD_BACKGROUND_COLOR)
 
     def draw(self) -> None:
         """Рисуем голову змейки и стираем след от хвоста."""
         # новая голова
         head_rect = pygame.Rect(
-            self.get_head_position(), (CELL_SIZE, CELL_SIZE)
+            self.get_head_position(), (GRID_SIZE, GRID_SIZE)
         )
         pygame.draw.rect(screen, self.body_color, head_rect)
-        pygame.draw.rect(screen, BG_COLOR, head_rect, 1)
+        pygame.draw.rect(screen, BOARD_BACKGROUND_COLOR, head_rect, 1)
 
         # стираем хвост, если он остался
         if self._last_tail is not None:
-            tail_rect = pygame.Rect(self._last_tail, (CELL_SIZE, CELL_SIZE))
-            pygame.draw.rect(screen, BG_COLOR, tail_rect)
+            tail_rect = pygame.Rect(self._last_tail, (GRID_SIZE, GRID_SIZE))
+            pygame.draw.rect(screen, BOARD_BACKGROUND_COLOR, tail_rect)
 
 
 def handle_keys(snake: Snake) -> None:
@@ -190,7 +190,7 @@ def main() -> None:
     snake = Snake()
     apple = Apple(occupied=snake.positions)
 
-    screen.fill(BG_COLOR)
+    screen.fill(BOARD_BACKGROUND_COLOR)
 
     while True:
         clock.tick(GAME_SPEED)
